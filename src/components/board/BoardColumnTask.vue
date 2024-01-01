@@ -3,16 +3,26 @@
     <VisuallyHidden>
       <DialogTitle></DialogTitle>
     </VisuallyHidden>
-    <div ref="target" draggable="true" class="group task-title">
-      {{ task.title }}
-      <div class="absolute top-1 right-1">
-        <DialogTrigger as-child>
-          <Button size="xs" class="mt-0 p-2 hidden group-hover:inline-flex" variant="ghost">
-            <Edit2 class="h-4 w-4" />
-          </Button>
-        </DialogTrigger>
-      </div>
-    </div>
+    <Drop @drop="onElementDrop">
+      <Drag
+        :dataTransfer="{
+          type: 'task',
+          fromColumnIndex: columnIndex,
+          fromTaskIndex: index,
+        }"
+      >
+        <div ref="target" class="group task-title">
+          {{ task.title }}
+          <div class="absolute top-1 right-1">
+            <DialogTrigger as-child>
+              <Button size="xs" class="mt-0 p-2 hidden group-hover:inline-flex" variant="ghost">
+                <Edit2 class="h-4 w-4" />
+              </Button>
+            </DialogTrigger>
+          </div>
+        </div>
+      </Drag>
+    </Drop>
     <DialogContentTask class="bg-transparent border-none shadow-none" :style="modalStyle">
       <Textarea
         autogrow
@@ -44,9 +54,13 @@ import type { Task } from '@/lib/types'
 import { useBoard } from '@/lib/composables'
 import { useElementBounding } from '@vueuse/core'
 import { Textarea } from '@/components/ui/textarea'
+import { Drag, Drop } from '@/components/draggable'
+import { useDraggable } from '@/lib/composables'
 
 const props = defineProps<{
   columnId: string
+  columnIndex: number
+  index: number
   task: Task
 }>()
 
@@ -74,6 +88,8 @@ watch(
     taskTitle.value = props.task.title
   },
 )
+
+const { onElementDrop } = useDraggable(props)
 
 function saveNewTitle() {
   editBoardColumnTask(props.columnId, props.task.id, {

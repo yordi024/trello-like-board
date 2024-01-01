@@ -6,8 +6,15 @@ export const useBoard = function () {
 
   const { boards, activeBoard } = storeToRefs(store)
 
-  const { setActiveBoard, addBoard, addBoardColumn, addBoardColumnTask, editBoardColumnTask } =
-    store
+  const {
+    setActiveBoard,
+    addBoard,
+    addBoardColumn,
+    addBoardColumnTask,
+    editBoardColumnTask,
+    moveColumn,
+    moveTask,
+  } = store
 
   function addNewBoard() {
     const board = addBoard({
@@ -28,5 +35,7 @@ export const useBoard = function () {
     addBoardColumnTask,
     addNewBoard,
     editBoardColumnTask,
+    moveColumn,
+    moveTask,
   }
 }

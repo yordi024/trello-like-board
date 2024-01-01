@@ -1,7 +1,12 @@
 <template>
   <ScrollArea class="w-full h-full">
     <div class="nowrap flex flex-row p-5 gap-5 w-full items-start">
-      <BoardColumn v-for="column in board.columns" :key="column.id" :column="column" />
+      <BoardColumn
+        v-for="(column, index) in board.columns"
+        :index="index"
+        :key="column.id"
+        :column="column"
+      />
 
       <div class="flex bg-gray-50 shadow rounded-2xl p-4 w-[400px]">
         <Input

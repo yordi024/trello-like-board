@@ -16,3 +16,9 @@ export interface Board {
   title: string
   columns: Column[]
 }
+
+export interface TransferData {
+  type: string
+  fromColumnIndex: number
+  fromTaskIndex?: number
+}

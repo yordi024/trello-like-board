@@ -48,6 +48,49 @@ export const useBoardStore = defineStore('userBoard', () => {
     activeBoardColumnTask.description = task.description
   }
 
+  function removeBoardColumnTask(columnId: string, taskId: string) {
+    if (!activeBoard.value) return
+
+    const activeBoardColumn = activeBoard.value.columns.find((col) => col.id === columnId)
+
+    if (!activeBoardColumn) return
+
+    activeBoardColumn.tasks = activeBoardColumn.tasks.filter((task) => task.id !== taskId)
+  }
+
+  function removeBoardColumn(columnId: string) {
+    if (!activeBoard.value) return
+
+    activeBoard.value.columns = activeBoard.value.columns.filter((col) => col.id !== columnId)
+  }
+
+  function moveColumn(oldIndex: number, newIndex: number) {
+    if (!activeBoard.value) return
+
+    const activeBoardColumn = activeBoard.value.columns.at(oldIndex)
+
+    if (!activeBoardColumn) return
+
+    activeBoard.value.columns.splice(oldIndex, 0, activeBoard.value.columns.splice(newIndex, 1)[0])
+  }
+
+  function moveTask(
+    fromColumnIndex: number,
+    fromTaskIndex: number,
+    toColumIndex: number,
+    newTaskIndex: number,
+  ) {
+    if (!activeBoard.value) return
+
+    const fromColumn = activeBoard.value.columns.at(fromColumnIndex)
+    const toColum = activeBoard.value.columns.at(toColumIndex)
+
+    if (!fromColumn || !toColum) return
+
+    const [taskToMove] = fromColumn.tasks.splice(fromTaskIndex, 1)
+    toColum.tasks.splice(newTaskIndex, 0, taskToMove)
+  }
+
   onMounted(() => {
     boards.value = data as Board[]
     activeBoard.value = boards.value[0]
@@ -61,5 +104,8 @@ export const useBoardStore = defineStore('userBoard', () => {
     addBoardColumn,
     addBoardColumnTask,
     editBoardColumnTask,
+    moveColumn,
+    moveTask,
+    removeBoardColumnTask,
   }
 })
