@@ -1,51 +1,54 @@
 <template>
   <ScrollArea class="w-full h-full">
-    <div class="nowrap flex flex-row p-5 gap-5 w-full items-start">
-      <BoardColumn
-        v-for="(column, index) in board.columns"
-        :index="index"
-        :key="column.id"
-        :column="column"
-      />
-
-      <div class="flex bg-gray-50 shadow rounded-2xl p-4 w-[400px]">
-        <Input
-          type="text"
-          v-model="columnInput"
-          placeholder="New Column Name"
-          @keydown.enter="addColumn"
-        />
-      </div>
-    </div>
+    <draggable
+      class="nowrap flex flex-row p-5 gap-5 w-full items-start"
+      :list="board.columns"
+      group="columns"
+      @start="drag = true"
+      @end="drag = false"
+      handle=".handle"
+      item-key="id"
+    >
+      <template #item="{ element }">
+        <BoardColumn :key="element.id" :column="element" />
+      </template>
+      <template #footer>
+        <div class="flex bg-gray-50 shadow rounded-2xl p-4 w-[400px]">
+          <Input
+            type="text"
+            v-model="columnInput"
+            placeholder="New Column Name"
+            @keydown.enter="
+              addColumn(columnInput, () => {
+                columnInput = ''
+              })
+            "
+          />
+        </div>
+      </template>
+    </draggable>
     <ScrollBar orientation="horizontal" />
   </ScrollArea>
+
+  <EditTaskTitleModal />
 </template>
 <script setup lang="ts">
 import { BoardColumn } from '@/components/board'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import type { Board } from '@/lib/types'
-import { useBoardStore } from '@/stores/board'
 import { ref } from 'vue'
 import { Input } from '@/components/ui/input'
+import draggable from 'vuedraggable'
+import { useBoard } from '@/lib/composables'
+import EditTaskTitleModal from './EditTaskTitleModal.vue'
 
 defineProps<{
   board: Board
 }>()
 
-const store = useBoardStore()
-
-const { addBoardColumn } = store
+const { addColumn } = useBoard()
 
 const columnInput = ref<string>('')
 
-function addColumn() {
-  if (!columnInput.value.trim()) return
-
-  addBoardColumn({
-    id: 'column-' + new Date().getTime(),
-    title: columnInput.value.trim(),
-    tasks: [],
-  })
-  columnInput.value = ''
-}
+const drag = ref(false)
 </script>

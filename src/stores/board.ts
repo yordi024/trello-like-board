@@ -8,8 +8,16 @@ export const useBoardStore = defineStore('userBoard', () => {
 
   const activeBoard = ref<Board>()
 
+  const selectedTask = ref<Task>()
+
+  const modalStyle = ref<any>()
+
   function setActiveBoard(board: Board) {
     activeBoard.value = board
+  }
+
+  function setModalStyle(style: any) {
+    modalStyle.value = style
   }
 
   function addBoard(board: Board) {
@@ -91,6 +99,10 @@ export const useBoardStore = defineStore('userBoard', () => {
     toColum.tasks.splice(newTaskIndex, 0, taskToMove)
   }
 
+  function setSelectedTask(task: Task) {
+    selectedTask.value = task
+  }
+
   onMounted(() => {
     boards.value = data as Board[]
     activeBoard.value = boards.value[0]
@@ -99,6 +111,9 @@ export const useBoardStore = defineStore('userBoard', () => {
   return {
     boards,
     activeBoard,
+    selectedTask,
+    modalStyle,
+    setModalStyle,
     setActiveBoard,
     addBoard,
     addBoardColumn,
@@ -107,5 +122,6 @@ export const useBoardStore = defineStore('userBoard', () => {
     moveColumn,
     moveTask,
     removeBoardColumnTask,
+    setSelectedTask,
   }
 })

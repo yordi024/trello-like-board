@@ -3,6 +3,7 @@ export interface Task {
   title: string
   description: string
   createdAt: string
+  columnId?: string
 }
 
 export interface Column {

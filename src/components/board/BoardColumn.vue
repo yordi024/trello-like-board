@@ -1,32 +1,25 @@
 <template>
-  <!-- <Drop @drop="onElementDrop">
-    <Drag
-      :data-transfer="{
-        type: 'column',
-        fromColumnIndex: index,
-      }"
-    > -->
   <div class="column bg-slate-300">
     <div class="flex items-center mb-4">
+      <GripVertical class="h5 w-5 handle" />
       <h2 class="font-semibold text-lg mr-2">{{ column.title }}</h2>
       <Badge>{{ column.tasks.length }} </Badge>
-      <pre>index: {{ index }}</pre>
     </div>
-    <div class="space-y-4 list-reset">
-      <BoardColumnTask
-        v-for="(task, taskIndex) in column.tasks"
-        :index="taskIndex"
-        :columnIndex="index"
-        :key="task.id"
-        :columnId="column.id"
-        :task="task"
-      ></BoardColumnTask>
-    </div>
+    <draggable
+      class="space-y-4 list-reset"
+      :list="column.tasks"
+      group="tasks"
+      @start="drag = true"
+      @end="drag = false"
+      item-key="id"
+    >
+      <template #item="{ element }">
+        <BoardColumnTask :key="element.id" :columnId="column.id" :task="element"></BoardColumnTask>
+      </template>
+    </draggable>
     <Input class="mt-4" placeholder="+ Enter new task" @keyup.enter="addTask" v-model="taskInput" />
     <span>{{ inputError }}</span>
   </div>
-  <!-- </Drag>
-  </Drop> -->
 </template>
 
 <script setup lang="ts">
@@ -36,11 +29,10 @@ import BoardColumnTask from './BoardColumnTask.vue'
 import type { Column } from '@/lib/types'
 import { ref } from 'vue'
 import { useBoardStore } from '@/stores/board'
-import { Drag, Drop } from '@/components/draggable'
-import { useDraggable } from '@/lib/composables'
+import { GripVertical } from 'lucide-vue-next'
+import draggable from 'vuedraggable'
 
 const props = defineProps<{
-  index: number
   column: Column
 }>()
 
@@ -52,7 +44,7 @@ const taskInput = ref<string>('')
 
 const inputError = ref('')
 
-const { onElementDrop } = useDraggable(props)
+const drag = ref(false)
 
 function addTask() {
   if (!taskInput.value.trim()) {
@@ -72,5 +64,9 @@ function addTask() {
 <style scoped lang="css">
 .column {
   @apply bg-gray-50 shadow rounded-2xl p-4 w-[450px];
+}
+
+.handle {
+  @apply cursor-grab;
 }
 </style>
