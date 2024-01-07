@@ -8,7 +8,7 @@
         :value="board.id"
         >{{ board.title }}</TabsTrigger
       >
-      <Button class="ms-5" size="xs" variant="secondary" @click="addNewBoard">Add Board</Button>
+      <NewBoardFormDialog />
     </TabsList>
     <TabsContent
       v-for="board in boards"
@@ -22,17 +22,39 @@
 </template>
 <script setup lang="ts">
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Button } from '@/components/ui'
 import { Board } from '@/components/board'
 import { useBoard } from '@/lib/composables'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { NewBoardFormDialog } from '@/components/forms'
+import type { Color } from '@/lib/types'
 
-const { boards, activeBoard, setActiveBoard, addNewBoard } = useBoard()
+const { boards, activeBoard, setActiveBoard } = useBoard()
 
 const currentBoard = ref('')
 
+const allColors: Color[] = ['rose', 'blue', 'green', 'orange', 'red', 'gray', 'yellow', 'violet']
+
+watch(
+  () => activeBoard.value?.id,
+  (newValue) => {
+    if (!newValue) return
+
+    currentBoard.value = newValue
+    console.log(newValue)
+  },
+)
+
+watch(
+  () => activeBoard.value?.color,
+  (color) => {
+    document.documentElement.classList.remove(...allColors.map((color) => `theme-${color}`))
+    document.documentElement.classList.add(`theme-${color}`)
+  },
+)
+
 onMounted(() => {
   currentBoard.value = activeBoard.value?.id || ''
+  document.documentElement.classList.add(`theme-${activeBoard.value?.color}`)
 })
 </script>
 

@@ -15,6 +15,7 @@ export interface Column {
 export interface Board {
   id: string
   title: string
+  color: Color
   columns: Column[]
 }
 
@@ -23,3 +24,7 @@ export interface TransferData {
   fromColumnIndex: number
   fromTaskIndex?: number
 }
+
+export type Color = 'gray' | 'red' | 'rose' | 'orange' | 'green' | 'blue' | 'yellow' | 'violet'
+
+export type ColorObj = { [key in Color]: string }

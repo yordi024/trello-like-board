@@ -1,7 +1,7 @@
 import { useBoardStore } from '@/stores/board'
 import { storeToRefs } from 'pinia'
-import type { Task } from '../types'
-import { ref } from 'vue'
+import type { Color, Column, Task } from '../types'
+import { uuid } from '../utils'
 
 export const useBoard = function () {
   const store = useBoardStore()
@@ -20,11 +20,30 @@ export const useBoard = function () {
     setModalStyle,
   } = store
 
-  function addNewBoard() {
+  function addNewBoard({ title, color }: { title: string; color: Color }) {
+    const defaultColumns: Column[] = [
+      {
+        id: uuid(),
+        title: 'To Do',
+        tasks: [],
+      },
+      {
+        id: uuid(),
+        title: 'Doing',
+        tasks: [],
+      },
+      {
+        id: uuid(),
+        title: 'Done',
+        tasks: [],
+      },
+    ]
+
     const board = addBoard({
-      id: 'board-' + new Date().getTime(),
-      title: 'Board #' + boards.value.length + 1,
-      columns: [],
+      id: uuid(),
+      title,
+      color,
+      columns: defaultColumns,
     })
 
     setActiveBoard(board)

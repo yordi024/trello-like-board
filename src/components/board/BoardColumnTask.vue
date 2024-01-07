@@ -15,25 +15,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { Button } from '@/components/ui'
 import { Edit2 } from 'lucide-vue-next'
 import type { Task } from '@/lib/types'
 import { useBoard } from '@/lib/composables'
 import { useElementBounding } from '@vueuse/core'
 
-const props = defineProps<{
+defineProps<{
   columnId: string
   task: Task
 }>()
 
 const { editTaskTitle } = useBoard()
 
-const taskTitle = ref(props.task.title)
-
 const target = ref<HTMLDivElement | null>(null)
-
-const open = ref(false)
 
 const taskCardboundaries = useElementBounding(target)
 
@@ -45,13 +41,6 @@ const modalStyle = computed(() => {
     transform: `translate(${taskCardboundaries?.left.value}px, ${taskCardboundaries?.top.value}px)`,
   }
 })
-
-watch(
-  () => open.value,
-  () => {
-    taskTitle.value = props.task.title
-  },
-)
 </script>
 
 <style>

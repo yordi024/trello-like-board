@@ -1,5 +1,5 @@
 <template>
-  <div class="column bg-slate-300">
+  <div class="column">
     <div class="flex items-center mb-4">
       <GripVertical class="h5 w-5 handle" />
       <h2 class="font-semibold text-lg mr-2">{{ column.title }}</h2>
@@ -63,7 +63,7 @@ function addTask() {
 
 <style scoped lang="css">
 .column {
-  @apply bg-gray-50 shadow rounded-2xl p-4 w-[450px];
+  @apply shadow rounded-2xl p-4 w-[450px];
 }
 
 .handle {

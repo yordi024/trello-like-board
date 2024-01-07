@@ -1,7 +1,8 @@
 [
     {
         "id": "board",
-        "title": "New Board",
+        "title": "Demo Board",
+        "color": "green",
         "columns": [
             {
                 "id": "column-1",
@@ -40,37 +41,6 @@
                     {
                         "id": "3",
                         "title": "done task",
-                        "description": "New task description",
-                        "createdAt": "2023-01-01T00:00:00.000Z"
-                    }
-                ]
-            }
-        ]   
-    },
-    {
-        
-        "id": "board-2",
-        "title": "Board #2",
-        "columns": [
-            {
-                "id": "column-4",
-                "title": "To Do",
-                "tasks": [
-                    {
-                        "id": "4",
-                        "title": "New task",
-                        "description": "New task description",
-                        "createdAt": "2023-01-01T00:00:00.000Z"
-                    }
-                ]
-            },
-            {
-                "id": "column-5",
-                "title": "Doing",
-                "tasks": [
-                    {
-                        "id": "5",
-                        "title": "doing task",
                         "description": "New task description",
                         "createdAt": "2023-01-01T00:00:00.000Z"
                     }
