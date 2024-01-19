@@ -1,4 +1,5 @@
 <template>
+  <Header />
   <main class="main">
     <div class="content">
       <slot />
@@ -6,13 +7,15 @@
   </main>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Header from './Header.vue'
+</script>
 
 <style lang="css">
 .main {
-  @apply h-screen overflow-auto;
+  @apply h-[calc(100vh-54px)] overflow-auto;
 }
 .content {
-  @apply p-4 h-full;
+  @apply mx-auto px-4 sm:px-6 lg:px-8 w-full p-4 h-full;
 }
 </style>

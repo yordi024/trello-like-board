@@ -6,10 +6,10 @@ import { uuid } from '../utils'
 export const useBoard = function () {
   const store = useBoardStore()
 
-  const { boards, activeBoard, selectedTask, modalStyle, currentForm } = storeToRefs(store)
+  const { boards, selectedTask, modalStyle, currentForm } = storeToRefs(store)
 
   const {
-    setActiveBoard,
+    getBoardById,
     addBoard,
     addBoardColumn,
     addBoardColumnTask,
@@ -41,14 +41,12 @@ export const useBoard = function () {
       },
     ]
 
-    const board = addBoard({
+    addBoard({
       id: uuid(),
       title,
       color,
       columns: defaultColumns,
     })
-
-    setActiveBoard(board)
   }
 
   function addColumn(title: string, onComplete: Function) {
@@ -74,11 +72,10 @@ export const useBoard = function () {
 
   return {
     boards,
-    activeBoard,
+    getBoardById,
     selectedTask,
     currentForm,
     modalStyle,
-    setActiveBoard,
     addBoard,
     addColumn,
     addBoardColumnTask,

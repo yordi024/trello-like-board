@@ -1,8 +1,6 @@
 <template>
   <Dialog v-model:open="open">
-    <DialogTrigger as-child>
-      <Button class="ms-5" size="xs" variant="secondary">Add Board</Button></DialogTrigger
-    >
+    <DialogTrigger as-child> <slot /></DialogTrigger>
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Add new Board</DialogTitle>
@@ -80,22 +78,11 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { Check } from 'lucide-vue-next'
-import type { ColorObj } from '@/lib/types'
 import { useBoard } from '@/lib/composables'
 import { ref } from 'vue'
+import { colors } from '@/lib/constants'
 
 const { addNewBoard } = useBoard()
-
-const colors: ColorObj = {
-  gray: '#374151',
-  rose: '#be123c',
-  blue: '#1d4ed8',
-  green: '#15803d',
-  orange: '#c2410c',
-  red: '#b91c1c',
-  yellow: '#eab308',
-  violet: '#6d28d9',
-}
 
 const open = ref(false)
 

@@ -75,10 +75,23 @@
     height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    @apply bg-primary text-foreground;
+    @apply text-foreground;
   }
 
   #app {
     height: 100%;
   }
+}
+
+.task {
+  @apply flex items-center flex-wrap shadow mb-2 py-2 px-2 rounded bg-white text-gray-700 no-underline;
+}
+
+.column {
+  @apply bg-gray-100 p-2 mr-4 text-left shadow rounded;
+  min-width: 350px;
+}
+
+.task-bg {
+  background: rgba(0, 0, 0, 0.5);
 }

@@ -5,8 +5,13 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'boards',
+      component: () => import('../views/Home.vue'),
+    },
+    {
+      path: '/:boardId',
       name: 'board',
-      component: () => import('../views/BoardsView.vue'),
+      component: () => import('../views/Board.vue'),
     },
   ],
 })

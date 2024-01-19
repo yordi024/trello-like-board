@@ -57,8 +57,6 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import { z } from 'zod'
 
-// TODO: implement dynamic modal opening and task details modal
-
 const { editBoardColumnTask, selectedTask, currentForm, setSelectedTask } = useBoard()
 
 const open = ref(false)

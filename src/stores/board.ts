@@ -22,6 +22,10 @@ export const useBoardStore = defineStore('useBoard', () => {
     modalStyle.value = style
   }
 
+  function getBoardById(boardId: string): Board | undefined {
+    return boards.value.find((board) => board.id === boardId)
+  }
+
   function addBoard(board: Board) {
     boards.value.push(board)
     return board
@@ -125,6 +129,7 @@ export const useBoardStore = defineStore('useBoard', () => {
     boards,
     activeBoard,
     selectedTask,
+    getBoardById,
     currentForm,
     modalStyle,
     setSelectedTask,
