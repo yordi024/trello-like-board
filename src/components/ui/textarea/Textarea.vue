@@ -2,7 +2,7 @@
 import { useVModel } from '@vueuse/core'
 import { cn } from '@/lib/utils'
 import { onClickOutside } from '@vueuse/core'
-import { nextTick, ref } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps<{
   defaultValue?: string | number
@@ -30,7 +30,7 @@ function onInput() {
 
   if (!target.value) return
 
-  target.value.style.height = 'auto'
+  target.value.style.height = '43px'
   target.value.style.height = target.value.scrollHeight + 'px'
 }
 </script>

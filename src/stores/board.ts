@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { onMounted, ref, type Ref } from 'vue'
 import data from '@/data/board.json'
 
-export const useBoardStore = defineStore('userBoard', () => {
+export const useBoardStore = defineStore('useBoard', () => {
   const boards: Ref<Board[]> = ref<Board[]>([])
 
   const activeBoard = ref<Board>()
@@ -11,6 +11,8 @@ export const useBoardStore = defineStore('userBoard', () => {
   const selectedTask = ref<Task>()
 
   const modalStyle = ref<any>()
+
+  const currentForm = ref('')
 
   function setActiveBoard(board: Board) {
     activeBoard.value = board
@@ -99,20 +101,33 @@ export const useBoardStore = defineStore('userBoard', () => {
     toColum.tasks.splice(newTaskIndex, 0, taskToMove)
   }
 
-  function setSelectedTask(task: Task) {
+  function setSelectedTask(task?: Task) {
     selectedTask.value = task
+  }
+
+  function openTaskDetailsModal(task: Task) {
+    setSelectedTask(task)
+    currentForm.value = 'task-details'
+  }
+
+  function openEditTaskTitleModal(task: Task) {
+    setSelectedTask(task)
+    currentForm.value = 'task-title'
   }
 
   onMounted(() => {
     boards.value = data as Board[]
     activeBoard.value = boards.value[0]
+    selectedTask.value = activeBoard.value.columns[0].tasks[0]
   })
 
   return {
     boards,
     activeBoard,
     selectedTask,
+    currentForm,
     modalStyle,
+    setSelectedTask,
     setModalStyle,
     setActiveBoard,
     addBoard,
@@ -122,6 +137,7 @@ export const useBoardStore = defineStore('userBoard', () => {
     moveColumn,
     moveTask,
     removeBoardColumnTask,
-    setSelectedTask,
+    openTaskDetailsModal,
+    openEditTaskTitleModal,
   }
 })

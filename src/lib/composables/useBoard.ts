@@ -6,7 +6,7 @@ import { uuid } from '../utils'
 export const useBoard = function () {
   const store = useBoardStore()
 
-  const { boards, activeBoard, selectedTask, modalStyle } = storeToRefs(store)
+  const { boards, activeBoard, selectedTask, modalStyle, currentForm } = storeToRefs(store)
 
   const {
     setActiveBoard,
@@ -16,8 +16,10 @@ export const useBoard = function () {
     editBoardColumnTask,
     moveColumn,
     moveTask,
-    setSelectedTask,
+    openTaskDetailsModal,
+    openEditTaskTitleModal,
     setModalStyle,
+    setSelectedTask,
   } = store
 
   function addNewBoard({ title, color }: { title: string; color: Color }) {
@@ -62,15 +64,19 @@ export const useBoard = function () {
   }
 
   function editTaskTitle(task: Task, modalStyle: any) {
-    setSelectedTask(task)
+    openEditTaskTitleModal(task)
     setModalStyle(modalStyle)
-    console.log({ task, modalStyle: modalStyle.value })
+  }
+
+  function editTask(task: Task) {
+    openTaskDetailsModal(task)
   }
 
   return {
     boards,
     activeBoard,
     selectedTask,
+    currentForm,
     modalStyle,
     setActiveBoard,
     addBoard,
@@ -81,5 +87,7 @@ export const useBoard = function () {
     moveColumn,
     moveTask,
     editTaskTitle,
+    editTask,
+    setSelectedTask,
   }
 }

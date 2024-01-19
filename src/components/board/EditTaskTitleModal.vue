@@ -26,7 +26,7 @@ import { Dialog, DialogClose, DialogContentTask, DialogTitle } from '@/component
 import { useBoard } from '@/lib/composables'
 import { Textarea } from '@/components/ui/textarea'
 
-const { editBoardColumnTask, selectedTask, modalStyle } = useBoard()
+const { editBoardColumnTask, selectedTask, modalStyle, currentForm } = useBoard()
 
 const taskTitle = ref()
 
@@ -35,7 +35,7 @@ const open = ref(false)
 watch(
   () => selectedTask.value,
   () => {
-    if (selectedTask.value?.id) {
+    if (selectedTask.value?.id && currentForm.value === 'task-title') {
       taskTitle.value = selectedTask.value.title
       open.value = true
     }

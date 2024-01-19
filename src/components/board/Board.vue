@@ -1,7 +1,7 @@
 <template>
   <ScrollArea class="w-full h-full">
     <draggable
-      class="nowrap flex flex-row p-5 gap-5 w-full items-start"
+      class="nowrap flex flex-row gap-5 w-full items-start"
       :list="board.columns"
       group="columns"
       @start="drag = true"
@@ -31,6 +31,7 @@
   </ScrollArea>
 
   <EditTaskTitleModal />
+  <TaskDetailModal />
 </template>
 <script setup lang="ts">
 import { BoardColumn } from '@/components/board'
@@ -41,6 +42,7 @@ import { Input } from '@/components/ui/input'
 import draggable from 'vuedraggable'
 import { useBoard } from '@/lib/composables'
 import EditTaskTitleModal from './EditTaskTitleModal.vue'
+import TaskDetailModal from './TaskDetailModal.vue'
 
 defineProps<{
   board: Board

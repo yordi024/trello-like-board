@@ -1,9 +1,9 @@
 <template>
-  <div ref="target" class="group task-title">
+  <div ref="target" class="group task-title" @click="editTask({ ...task, columnId })">
     {{ task.title }}
     <div class="absolute top-1 right-1">
       <Button
-        @click="editTaskTitle({ ...task, columnId }, modalStyle)"
+        @click.stop="editTaskTitle({ ...task, columnId }, modalStyle)"
         size="xs"
         class="mt-0 p-2 hidden group-hover:inline-flex"
         variant="ghost"
@@ -27,7 +27,7 @@ defineProps<{
   task: Task
 }>()
 
-const { editTaskTitle } = useBoard()
+const { editTaskTitle, editTask } = useBoard()
 
 const target = ref<HTMLDivElement | null>(null)
 
