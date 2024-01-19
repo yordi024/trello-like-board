@@ -38,4 +38,4 @@ onMounted(() => {
 })
 </script>
 
-<style lang="css"></style>
+<style></style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="column">
+  <div class="shadow rounded-2xl p-4 w-[450px] bg-card">
     <div class="flex items-center mb-4">
       <GripVertical class="h5 w-5 handle" />
       <h2 class="font-semibold text-lg mr-2">{{ column.title }}</h2>
@@ -62,10 +62,6 @@ function addTask() {
 </script>
 
 <style scoped lang="css">
-.column {
-  @apply shadow rounded-2xl p-4 w-[450px];
-}
-
 .handle {
   @apply cursor-grab;
 }

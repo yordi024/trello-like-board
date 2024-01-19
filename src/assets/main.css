@@ -83,15 +83,6 @@
   }
 }
 
-.task {
-  @apply flex items-center flex-wrap shadow mb-2 py-2 px-2 rounded bg-white text-gray-700 no-underline;
-}
-
-.column {
-  @apply bg-gray-100 p-2 mr-4 text-left shadow rounded;
-  min-width: 350px;
-}
-
-.task-bg {
-  background: rgba(0, 0, 0, 0.5);
+.task-title {
+  @apply cursor-pointer py-2 px-3 w-full shadow rounded-lg border bg-background relative text-base font-semibold;
 }

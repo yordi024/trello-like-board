@@ -43,8 +43,4 @@ const modalStyle = computed(() => {
 })
 </script>
 
-<style>
-.task-title {
-  @apply cursor-pointer py-2 px-3 w-full shadow rounded-lg border bg-background relative text-base font-semibold;
-}
-</style>
+<style></style>
