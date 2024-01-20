@@ -7,7 +7,7 @@
         </Button>
         <div class="flex gap-2">
           <div id="header-action"></div>
-          <Button @click="toggleDark()" class="px-2" size="sm" variant="outline">
+          <Button @click="toggleDark()" class="px-2" size="sm" variant="ghost">
             <Sun v-if="isDark" />
             <Moon v-else class="h-5" />
           </Button>

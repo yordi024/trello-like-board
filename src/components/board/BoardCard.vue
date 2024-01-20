@@ -1,5 +1,5 @@
 <template>
-  <div class="shadow rounded-lg relative overflow-hidden">
+  <div class="shadow rounded-lg relative overflow-hidden max-w-[450px]">
     <div class="h-36 w-full relative z-[1]" :style="{ backgroundColor: colors[board.color] }">
       <!-- <img
         src="https://pixabay.com/get/gb7de7866f4658751341a05febe68e53cbdfe75b7a163e35e9379f3e98db4be5a82a716c85036a2cff8b0135927bd6f453f0f3cd1730771279f938fabfa98daf8_1280.jpg"

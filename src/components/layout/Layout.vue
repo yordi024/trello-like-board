@@ -16,6 +16,6 @@ import Header from './Header.vue'
   @apply h-[calc(100vh-54px)] overflow-auto;
 }
 .content {
-  @apply mx-auto px-4 sm:px-6 lg:px-8 w-full p-4 h-full;
+  @apply mx-auto w-full h-full;
 }
 </style>

@@ -97,6 +97,8 @@ const { handleSubmit, setFieldValue, resetForm } = useForm({
   validationSchema: formSchema,
 })
 
+setFieldValue('color', 'green')
+
 const onSubmit = handleSubmit(({ title, color }) => {
   addNewBoard({
     title,

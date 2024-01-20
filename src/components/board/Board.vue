@@ -13,7 +13,7 @@
         <BoardColumn :key="element.id" :column="element" />
       </template>
       <template #footer>
-        <div class="flex bg-gray-50 shadow rounded-2xl p-4 w-[400px]">
+        <div class="flex bg-card shadow rounded-2xl p-4 w-[400px]">
           <Input
             type="text"
             v-model="columnInput"
