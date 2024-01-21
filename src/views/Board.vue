@@ -1,6 +1,6 @@
 <template>
   <section
-    class="p-4 sm:px-6 lg:px-8 h-full flex flex-col overflow-hidden"
+    class="h-full flex flex-col overflow-hidden"
     v-if="activeBoard"
     :style="{
       backgroundImage: `url(https://pixabay.com/get/gb7de7866f4658751341a05febe68e53cbdfe75b7a163e35e9379f3e98db4be5a82a716c85036a2cff8b0135927bd6f453f0f3cd1730771279f938fabfa98daf8_1280.jpg)`,
@@ -8,8 +8,10 @@
       backgroundPosition: 'center',
     }"
   >
-    <h3 class="text-white font-semibold text-xl mb-5">{{ activeBoard.title }}</h3>
-    <Board :board="activeBoard" />
+    <header class="container-fluid flex items-center py-4 bg-gray-900/50 mb-5">
+      <h3 class="text-white font-semibold text-xl">{{ activeBoard.title }}</h3>
+    </header>
+    <Board class="container-fluid" :board="activeBoard" />
   </section>
 </template>
 <script setup lang="ts">
@@ -35,14 +37,20 @@ watch(
   },
 )
 
-onMounted(() => {
+function loadBoard() {
   activeBoard.value = getBoardById(route.params.boardId as string)
+
+  if (!activeBoard.value) return
 
   document.documentElement.classList.add(`theme-${activeBoard.value?.color}`)
 
   const $content = document.querySelector('.content')
 
   $content?.classList.add('bg-primary')
+}
+
+onMounted(() => {
+  loadBoard()
 })
 </script>
 

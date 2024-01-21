@@ -1,5 +1,5 @@
 <template>
-  <section class="p-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 my-4 gap-4">
+  <section class="container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 my-4 gap-4">
     <BoardCard v-for="board in boards" :key="board.id" :board="board" />
   </section>
   <teleport to="#header-action">

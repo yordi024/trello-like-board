@@ -1,6 +1,6 @@
 <template>
   <header class="h-[54px] py-2 border-b">
-    <div class="mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <div class="mx-auto container-fluid w-full">
       <div class="flex justify-between items-center">
         <Button class="px-0" as-child variant="link" size="sm">
           <RouterLink to="/"><BookText /></RouterLink>
