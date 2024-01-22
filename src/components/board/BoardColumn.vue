@@ -44,12 +44,12 @@
     />
   </div>
   <teleport to="body">
-    <EditTaskTitleModal
+    <TaskTitleForm
       v-model="openTaskTitleEditModal"
       :task="selectedTask"
       @onUpdated="taskUpdated()"
     />
-    <TaskDetailModal v-model="openEditTaskModal" :task="selectedTask" @onUpdated="taskUpdated()" />
+    <TaskDetailForm v-model="openEditTaskModal" :task="selectedTask" @onUpdated="taskUpdated()" />
   </teleport>
 </template>
 
@@ -62,8 +62,7 @@ import { onMounted, ref } from 'vue'
 import { GripVertical } from 'lucide-vue-next'
 import draggable from 'vuedraggable'
 import { useBoard } from '@/lib/composables'
-import EditTaskTitleModal from './EditTaskTitleModal.vue'
-import TaskDetailModal from './TaskDetailModal.vue'
+import { TaskDetailForm, TaskTitleForm } from '@/components/forms'
 
 const { column } = defineProps<{
   column: Column

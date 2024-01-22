@@ -3,9 +3,9 @@
     <BoardCard v-for="board in boards" :key="board.id" :board="board" />
   </section>
   <teleport to="#header-action">
-    <NewBoardFormDialog>
+    <BoardForm>
       <Button size="sm">Create a board</Button>
-    </NewBoardFormDialog>
+    </BoardForm>
   </teleport>
 </template>
 <script setup lang="ts">
@@ -13,7 +13,7 @@ import { Button } from '@/components/ui'
 import { onMounted } from 'vue'
 import { BoardCard } from '@/components/board'
 import { useBoard } from '@/lib/composables'
-import { NewBoardFormDialog } from '@/components/forms'
+import { BoardForm } from '@/components/forms'
 
 const { boards } = useBoard()
 

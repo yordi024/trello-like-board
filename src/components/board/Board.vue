@@ -15,7 +15,7 @@
     >
       <template #item="{ element }">
         <div>
-          <BoardColumn :key="element.id" :board-id="board.id" :column="element" />
+          <BoardColumn :key="element.id" :column="element" />
         </div>
       </template>
       <template #footer>
@@ -59,7 +59,6 @@ const columnInput = ref<string>('')
 const drag = ref(false)
 
 function loadColumns() {
-  console.log(getBoardColumns(board.id))
   columns.value = getBoardColumns(board.id)
 }
 
