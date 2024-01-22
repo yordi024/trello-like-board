@@ -1,22 +1,23 @@
 export interface Task {
   id: string
-  title: string
-  description: string
-  createdAt: string
   columnId?: string
+  order?: number
+  title: string
+  description?: string
+  createdAt: string
 }
 
 export interface Column {
   id: string
+  boardId?: string
+  order?: number
   title: string
-  tasks: Task[]
 }
 
 export interface Board {
   id: string
   title: string
   color: Color
-  columns: Column[]
 }
 
 export interface TransferData {

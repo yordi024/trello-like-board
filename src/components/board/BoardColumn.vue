@@ -3,66 +3,136 @@
     <div class="flex items-center mb-4">
       <GripVertical class="h5 w-5 handle" />
       <h2 class="font-semibold text-lg mr-2">{{ column.title }}</h2>
-      <Badge>{{ column.tasks.length }} </Badge>
+      <Badge>{{ tasks?.length }} </Badge>
     </div>
     <draggable
-      class="space-y-4 list-reset"
-      :list="column.tasks"
+      class="list-body space-y-4 list-reset"
+      ghost-class="ghost-card"
+      drag-class="dragging-card"
+      :scroll-sensitivity="500"
+      :force-fallback="true"
+      :list="tasks"
       group="tasks"
       @start="drag = true"
       @end="drag = false"
+      @sort="handleSort"
+      @change="handleCardChange"
       item-key="id"
     >
       <template #item="{ element }">
-        <BoardColumnTask :key="element.id" :columnId="column.id" :task="element"></BoardColumnTask>
+        <div>
+          <BoardColumnTask
+            :key="element.id"
+            :columnId="column.id"
+            :task="element"
+            @onTitleEdit="editTaskTitle"
+            @onEdit="editTask"
+          ></BoardColumnTask>
+        </div>
       </template>
     </draggable>
-    <Input class="mt-4" placeholder="+ Enter new task" @keyup.enter="addTask" v-model="taskInput" />
-    <span>{{ inputError }}</span>
+    <Input
+      class="mt-4"
+      placeholder="+ Enter new task"
+      @keyup.enter="
+        addColumnTask(column.id, taskInput.trim(), () => {
+          taskInput = ''
+          loadTasks()
+        })
+      "
+      v-model="taskInput"
+    />
   </div>
+  <teleport to="body">
+    <EditTaskTitleModal
+      v-model="openTaskTitleEditModal"
+      :task="selectedTask"
+      @onUpdated="taskUpdated()"
+    />
+    <TaskDetailModal v-model="openEditTaskModal" :task="selectedTask" @onUpdated="taskUpdated()" />
+  </teleport>
 </template>
 
 <script setup lang="ts">
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import BoardColumnTask from './BoardColumnTask.vue'
-import type { Column } from '@/lib/types'
-import { ref } from 'vue'
-import { useBoardStore } from '@/stores/board'
+import type { Column, Task } from '@/lib/types'
+import { onMounted, ref } from 'vue'
 import { GripVertical } from 'lucide-vue-next'
 import draggable from 'vuedraggable'
+import { useBoard } from '@/lib/composables'
+import EditTaskTitleModal from './EditTaskTitleModal.vue'
+import TaskDetailModal from './TaskDetailModal.vue'
 
-const props = defineProps<{
+const { column } = defineProps<{
   column: Column
 }>()
 
-const store = useBoardStore()
+const store = useBoard()
 
-const { addBoardColumnTask } = store
+const { getTasksColumn, addColumnTask } = store
+
+const tasks = ref<Task[]>()
+
+const selectedTask = ref<Task>()
 
 const taskInput = ref<string>('')
 
-const inputError = ref('')
-
 const drag = ref(false)
 
-function addTask() {
-  if (!taskInput.value.trim()) {
-    return
-  }
+const openTaskTitleEditModal = ref(false)
 
-  addBoardColumnTask(props.column.id, {
-    id: 'task-' + new Date().getTime(),
-    title: taskInput.value.trim(),
-    description: '',
-    createdAt: new Date().toISOString(),
-  })
-  taskInput.value = ''
+const openEditTaskModal = ref(false)
+
+function loadTasks() {
+  tasks.value = getTasksColumn(column.id)
 }
+
+async function handleSort(e: any) {
+  console.log({ sort: e })
+}
+
+async function handleCardChange(e: any) {
+  console.log({ change: e })
+}
+
+function taskUpdated() {
+  selectedTask.value = undefined
+}
+
+function editTaskTitle(task: Task) {
+  selectedTask.value = task
+  openTaskTitleEditModal.value = true
+}
+
+function editTask(task: Task) {
+  selectedTask.value = task
+  openEditTaskModal.value = true
+}
+
+onMounted(() => {
+  loadTasks()
+})
 </script>
 
-<style scoped lang="css">
+<style lang="css">
 .handle {
   @apply cursor-grab;
+}
+
+.ghost-card {
+  @apply !bg-gray-100 dark:!bg-gray-700 rounded-lg;
+}
+.ghost-card > div {
+  @apply invisible;
+}
+
+.dragging-card {
+  @apply transform rotate-2 shadow-xl !cursor-grabbing;
+}
+.sortable-chosen {
+  opacity: 1 !important;
+  cursor: grabbing;
 }
 </style>

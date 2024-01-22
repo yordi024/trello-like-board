@@ -27,12 +27,13 @@
             <FormLabel>Accent Color</FormLabel>
             <div class="grid grid-cols-3 gap-2 py-1.5">
               <Button
+                type="button"
                 v-for="(color, index) in Object.keys(colors)"
                 :key="index"
                 variant="outline"
                 class="h-8 justify-start px-3"
                 :class="color === componentField.modelValue ? 'border-foreground border-2' : ''"
-                @click="setFieldValue('color', color)"
+                @click.stop="setFieldValue('color', color)"
               >
                 <span
                   class="h-5 w-5 rounded-full flex items-center justify-center"
@@ -79,7 +80,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { Check } from 'lucide-vue-next'
 import { useBoard } from '@/lib/composables'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { colors } from '@/lib/constants'
 
 const { addNewBoard } = useBoard()
@@ -97,14 +98,25 @@ const { handleSubmit, setFieldValue, resetForm } = useForm({
   validationSchema: formSchema,
 })
 
-setFieldValue('color', 'green')
-
 const onSubmit = handleSubmit(({ title, color }) => {
   addNewBoard({
     title,
     color,
   })
   open.value = false
-  resetForm()
+  resetForm({
+    color: 'green',
+  })
 })
+
+watch(
+  () => open.value,
+  () => {
+    if (!open.value) {
+      return
+    }
+
+    setFieldValue('color', 'green')
+  },
+)
 </script>

@@ -1,9 +1,14 @@
 <template>
-  <div ref="target" class="group task-title" @click="editTask({ ...task, columnId })">
+  <div ref="target" class="group task-title" @click="emits('onEdit', task)">
     {{ task.title }}
     <div class="absolute top-1 right-1">
       <Button
-        @click.stop="editTaskTitle({ ...task, columnId }, modalStyle)"
+        @click.stop="
+          () => {
+            emits('onTitleEdit', task)
+            setModalStyle(modalStyle)
+          }
+        "
         size="xs"
         class="mt-0 p-2 hidden group-hover:inline-flex"
         variant="ghost"
@@ -27,7 +32,9 @@ defineProps<{
   task: Task
 }>()
 
-const { editTaskTitle, editTask } = useBoard()
+const emits = defineEmits(['onTitleEdit', 'onEdit'])
+
+const { setModalStyle } = useBoard()
 
 const target = ref<HTMLDivElement | null>(null)
 

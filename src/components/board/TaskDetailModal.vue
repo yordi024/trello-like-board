@@ -41,7 +41,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 import { Button } from '@/components/ui'
 import {
   Dialog,
@@ -56,10 +56,17 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import { z } from 'zod'
+import type { Task } from '@/lib/types'
 
-const { editBoardColumnTask, selectedTask, currentForm, setSelectedTask } = useBoard()
+const open = defineModel<boolean>()
 
-const open = ref(false)
+const { task } = defineProps<{
+  task?: Task
+}>()
+
+const emits = defineEmits(['onUpdated'])
+
+const { updateColumnTask } = useBoard()
 
 const formSchema = toTypedSchema(
   z.object({
@@ -73,37 +80,29 @@ const { handleSubmit, setFieldValue, resetForm } = useForm({
 })
 
 const onSubmit = handleSubmit(({ title, description }) => {
-  if (!selectedTask.value) return
+  if (!task) return
 
-  editBoardColumnTask(selectedTask.value?.columnId as string, selectedTask.value.id, {
-    ...selectedTask.value,
+  updateColumnTask({
+    ...task,
     title,
     description: description ?? '',
   })
 
-  open.value = false
-  setTimeout(() => {
-    resetForm()
-  }, 50)
-})
+  emits('onUpdated')
 
-watch(
-  () => selectedTask.value,
-  () => {
-    if (selectedTask.value?.id && currentForm.value === 'task-details') {
-      setFieldValue('title', selectedTask.value.title)
-      setFieldValue('description', selectedTask.value.description)
-      open.value = true
-    }
-  },
-)
+  open.value = false
+})
 
 watch(
   () => open.value,
   () => {
     if (!open.value) {
-      setSelectedTask()
+      return setTimeout(() => {
+        resetForm()
+      }, 100)
     }
+    setFieldValue('title', task?.title)
+    setFieldValue('description', task?.description)
   },
 )
 </script>

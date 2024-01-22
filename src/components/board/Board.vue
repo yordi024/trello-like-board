@@ -1,8 +1,12 @@
 <template>
   <ScrollArea class="w-full h-full">
     <draggable
-      class="nowrap flex flex-row gap-5 w-full items-start"
-      :list="board.columns"
+      class="nowrap flex flex-row gap-5 w-full items-start list"
+      ghost-class="ghost-board"
+      drag-class="dragging-board"
+      :scroll-sensitivity="500"
+      :force-fallback="true"
+      :list="columns"
       group="columns"
       @start="drag = true"
       @end="drag = false"
@@ -10,7 +14,9 @@
       item-key="id"
     >
       <template #item="{ element }">
-        <BoardColumn :key="element.id" :column="element" />
+        <div>
+          <BoardColumn :key="element.id" :board-id="board.id" :column="element" />
+        </div>
       </template>
       <template #footer>
         <div class="flex bg-card shadow rounded-2xl p-4 w-[400px]">
@@ -19,8 +25,9 @@
             v-model="columnInput"
             placeholder="New Column Name"
             @keydown.enter="
-              addColumn(columnInput, () => {
+              addBoardColumn(board.id, columnInput, () => {
                 columnInput = ''
+                loadColumns()
               })
             "
           />
@@ -29,28 +36,52 @@
     </draggable>
     <ScrollBar orientation="horizontal" />
   </ScrollArea>
-
-  <EditTaskTitleModal />
-  <TaskDetailModal />
 </template>
 <script setup lang="ts">
 import { BoardColumn } from '@/components/board'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import type { Board } from '@/lib/types'
-import { ref } from 'vue'
+import type { Board, Column } from '@/lib/types'
+import { onMounted, ref } from 'vue'
 import { Input } from '@/components/ui/input'
 import draggable from 'vuedraggable'
 import { useBoard } from '@/lib/composables'
-import EditTaskTitleModal from './EditTaskTitleModal.vue'
-import TaskDetailModal from './TaskDetailModal.vue'
 
-defineProps<{
+const { board } = defineProps<{
   board: Board
 }>()
 
-const { addColumn } = useBoard()
+const { addBoardColumn, getBoardColumns } = useBoard()
+
+const columns = ref<Column[]>()
 
 const columnInput = ref<string>('')
 
 const drag = ref(false)
+
+function loadColumns() {
+  console.log(getBoardColumns(board.id))
+  columns.value = getBoardColumns(board.id)
+}
+
+onMounted(() => {
+  loadColumns()
+})
 </script>
+
+<style>
+.ghost-board > div {
+  @apply opacity-50;
+}
+.ghost-board > div > div {
+  @apply invisible;
+}
+
+.dragging-board {
+  @apply shadow-2xl transform rotate-2 cursor-grabbing;
+}
+
+.list .sortable-chosen {
+  overflow: hidden;
+  opacity: 1 !important;
+}
+</style>

@@ -25,30 +25,41 @@ import { Button } from '@/components/ui'
 import { Dialog, DialogClose, DialogContentTask, DialogTitle } from '@/components/ui/dialog'
 import { useBoard } from '@/lib/composables'
 import { Textarea } from '@/components/ui/textarea'
+import type { Task } from '@/lib/types'
 
-const { editBoardColumnTask, selectedTask, modalStyle, currentForm } = useBoard()
+const open = defineModel<boolean>()
+
+const { task } = defineProps<{
+  task?: Task
+}>()
+
+const emits = defineEmits(['onUpdated'])
+
+const { updateColumnTask, modalStyle, setModalStyle } = useBoard()
 
 const taskTitle = ref()
 
-const open = ref(false)
-
 watch(
-  () => selectedTask.value,
+  () => open.value,
   () => {
-    if (selectedTask.value?.id && currentForm.value === 'task-title') {
-      taskTitle.value = selectedTask.value.title
-      open.value = true
+    if (!open.value) {
+      return setModalStyle({})
     }
+
+    taskTitle.value = task?.title
   },
 )
 
 function saveNewTitle() {
-  if (!selectedTask.value) return
+  if (!taskTitle.value || !task) return
 
-  editBoardColumnTask(selectedTask.value?.columnId as string, selectedTask.value.id, {
-    ...selectedTask.value,
+  updateColumnTask({
+    ...task,
     title: taskTitle.value.trim(),
   })
+
+  emits('onUpdated')
+
   open.value = false
 }
 </script>
